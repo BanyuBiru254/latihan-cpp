@@ -57,4 +57,5 @@ int main() {
     cout << "ww2";
     cin >> ww2;
     cout << "ww1 x ww2 berapa si ===" << ww1 * ww2;
+    // test
 }
