@@ -1,0 +1,7 @@
+Catatan 1
+int: Angka bulat seperti 5 atau -10.
+float: Angka desimal ukuran kecil seperti 3.14.
+double: Angka desimal ukuran besar dan lebih teliti seperti 0.00012345.
+char: Satu huruf atau simbol seperti 'a' atau 'Z'.
+bool: Nilai benar atau salah (true / false).
+void: Kosong atau tidak ada nilai.
