@@ -21,12 +21,20 @@ int main()
         cout << "rtuyyf" << endl;
     }
 
-    if (b < 4)
-    {
+    // if (b < 4)
+    // {
+    //     cout << "b kurang dari 4";
+    // }
+    // else
+    // {
+    //     cout << "b itu lebih dari 4 woi";
+    // }
+    
+    if (b < 4){
         cout << "b kurang dari 4";
-    }
-    else
-    {
-        cout << "b itu lebih dari 4 woi";
+    } else if (b > 4){
+        cout << "b lebih dari 4";
+    } else {
+        cout << "b sama dengan 4";
     }
 }
