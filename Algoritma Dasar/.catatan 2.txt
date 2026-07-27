@@ -8,3 +8,13 @@ Tanda Kurung (): Kondisi wajib ditulis di dalam tanda kurung setelah if atau els
 Kurung Kurawal {}: Bersifat opsional jika isi blok hanya satu baris kode. Namun, wajib digunakan jika isi blok lebih dari satu baris.
 Urutan else if: Harus ditulis di bawah if dan di atas else.
 Posisi else: Selalu berada di paling akhir sebagai pilihan terakhir (default).
+
+penting harusnya :
+1. Pernyataan if 
+(Satu Kondisi)Digunakan untuk mengeksekusi blok kode hanya jika kondisi bernilai benar (true). Jika salah, blok diabaikan.
+cppif (kondisi) {
+    // dijalankan jika kondisi true
+}
+Contoh:cppif (totalBelanja > 100000) {
+    cout << "Anda mendapat diskon!";
+}
