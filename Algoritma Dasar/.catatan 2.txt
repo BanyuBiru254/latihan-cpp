@@ -15,6 +15,21 @@ penting harusnya :
 cppif (kondisi) {
     // dijalankan jika kondisi true
 }
-Contoh:cppif (totalBelanja > 100000) {
+Contoh:
+cppif (totalBelanja > 100000) {
     cout << "Anda mendapat diskon!";
+}
+
+2. Pernyataan 
+if-else (Dua Pilihan)Digunakan untuk memberikan jalur alternatif jika kondisi pada if bernilai salah (false).
+cppif (kondisi) {
+    // dijalankan jika kondisi true
+} else {
+    // dijalankan jika kondisi false
+}
+Contoh:
+cppif (umur >= 17) {
+    cout << "Bisa membuat SIM";
+} else {
+    cout << "Belum cukup umur";
 }
