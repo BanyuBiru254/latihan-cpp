@@ -3,3 +3,8 @@ If/Else: Dua pilihan untuk kondisi benar atau salah.
 Pernyataan else digunakan bersama if untuk menentukan blok kode yang akan dieksekusi jika kondisi pada if bernilai salah (false).
 
 yg ku ngerti:
+Aturan Penting Kunci
+Tanda Kurung (): Kondisi wajib ditulis di dalam tanda kurung setelah if atau else if.
+Kurung Kurawal {}: Bersifat opsional jika isi blok hanya satu baris kode. Namun, wajib digunakan jika isi blok lebih dari satu baris.
+Urutan else if: Harus ditulis di bawah if dan di atas else.
+Posisi else: Selalu berada di paling akhir sebagai pilihan terakhir (default).
