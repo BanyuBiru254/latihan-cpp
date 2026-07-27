@@ -1,7 +1,8 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
 
-int main() {
+int main()
+{
     cout << "hello world";
     cout << endl;
     cout << "daggers";
@@ -12,9 +13,10 @@ int main() {
     cout << " 70";
     cout << endl;
 
-    cout << "yo bro hello" << endl; 
+    cout << "yo bro hello" << endl;
 
-    int x = 7; int y = 3;
+    int x = 7;
+    int y = 3;
 
     cout << "x adalah" << x;
     cout << endl;
@@ -29,7 +31,7 @@ int main() {
 
     namaku = "Banyu";
 
-    cout << "namaku siapa ya = "<< namaku<<endl;
+    cout << "namaku siapa ya = " << namaku << endl;
     float t;
     t = 356.78;
     cout << "t / x = " << t / x << endl;
@@ -40,16 +42,16 @@ int main() {
 
     string papa;
     cin >> papa;
-    cout << "halo! "<< papa <<endl;
+    cout << "halo! " << papa << endl;
     cout << endl;
-    
+
     int q1;
     int q2;
-    cout << "q1 =" ;
+    cout << "q1 =";
     cin >> q1;
-    cout << "q2 =" ;
+    cout << "q2 =";
     cin >> q2;
-    cout << "Jadi q1 + q2 itu adalah " << q1 + q2<<endl;
+    cout << "Jadi q1 + q2 itu adalah " << q1 + q2 << endl;
     int ww1;
     int ww2;
     cout << "ww1";

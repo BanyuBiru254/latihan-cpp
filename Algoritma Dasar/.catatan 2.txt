@@ -1,0 +1,2 @@
+If: Satu pilihan jika kondisi benar.
+If/Else: Dua pilihan untuk kondisi benar atau salah.
