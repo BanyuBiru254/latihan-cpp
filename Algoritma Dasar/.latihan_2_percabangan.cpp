@@ -3,7 +3,7 @@ using namespace std;
 
 int main()
 {
-    int y = 8;
+    int y = 17;
     int b = 4;
 
     cout << "y = " << y;
@@ -43,5 +43,11 @@ int main()
         cout << "b sama dengan 4";
     }
 
-    
+    if (y < 17)
+    {
+        cout << "aku berumur 16 tahun";
+    }
+    else if (y > 17){
+        cout <<"aku berumur 18 tahun";
+    }
 }
