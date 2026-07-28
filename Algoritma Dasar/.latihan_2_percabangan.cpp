@@ -42,4 +42,6 @@ int main()
     {
         cout << "b sama dengan 4";
     }
+
+    
 }
