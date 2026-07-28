@@ -6,20 +6,20 @@ int main()
     int y = 17;
     int b = 4;
 
-    cout << "y = " << y;
-    cout << endl;
-    cout << "b = " << b;
-    cout << endl;
-    cout << "y x b?? = " << y * b << endl;
+  // cout << "y = " << y;
+  //  cout << endl;
+  //  cout << "b = " << b;
+  //  cout << endl;
+  //  cout << "y x b?? = " << y * b << endl;
 
-    if (y > 5)
-    {
-        cout << "y lebih dari 5" << endl;
-    }
-    else
-    {
-        cout << "rtuyyf" << endl;
-    }
+  //  if (y > 5)
+  //  {
+ //       cout << "y lebih dari 5" << endl;
+ //   }
+  //  else
+ //   {
+ //       cout << "rtuyyf" << endl;
+ //   }
 
     // if (b < 4)
     // {
@@ -48,6 +48,6 @@ int main()
         cout << "aku berumur 16 tahun";
     }
     else if (y > 17){
-        cout <<"aku berumur 18 tahun";
+        cout <<"aku berumur 18 tahun"
     }
 }
