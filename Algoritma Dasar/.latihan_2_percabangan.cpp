@@ -3,7 +3,7 @@ using namespace std;
 
 int main()
 {
-    int y = 17;
+    int umur = 17;
     int b = 4;
 
     // cout << "y = " << y;
@@ -41,12 +41,18 @@ int main()
     //       cout << "b sama dengan 4";
     // }
 
-    if (y < 17)
+    char status = 'y';
+
+    if (umur >= 17 && status == 'y')
     {
-        cout << "aku berumur 16 tahun";
+        cout << "Warga boleh memilih.";
     }
-    else if (y > 17)
+    else if (umur >= 17)
     {
-        cout << "aku berumur 18 tahun";
+        cout << "Warga cukup umur, tetapi belum terdaftar.";
+    }
+    else
+    {
+        cout << "Warga di bawah umur, akses ditolak.";
     }
 }
