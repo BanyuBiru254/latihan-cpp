@@ -38,3 +38,12 @@ warga yang datang ke tempat pemungutan suara (TPS). Warga hanya boleh memilih ji
 dan sudah terdaftar secara resmi (berstatus 'Y'). Jika warga sudah cukup umur tetapi belum terdaftar, sistem akan memberi tahu 
 bahwa mereka belum terdaftar. Jika warga masih di bawah umur, sistem otomatis menolak. Buatlah kode programnya 
 menggunakan struktur percabangan if-else if-else!
+
+JIKA (usia >= 17 DAN status == 'Y') MAKA:
+    Cetak: "Warga boleh memilih."
+
+SABALIKNYA JIKA (usia >= 17) MAKA:
+    Cetak: "Warga cukup umur, tetapi belum terdaftar."
+
+SELAIN ITU (artinya usia pasti < 17):
+    Cetak: "Warga di bawah umur, akses ditolak."
