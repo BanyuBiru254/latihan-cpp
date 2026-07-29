@@ -47,3 +47,9 @@ SABALIKNYA JIKA (usia >= 17) MAKA:
 
 SELAIN ITU (artinya usia pasti < 17):
     Cetak: "Warga di bawah umur, akses ditolak."
+
+Untuk menyusun syarat di dalam tanda kurung (kondisi), Anda akan membutuhkan operator berikut:
+    Operator Relasional (Perbandingan):
+    == : Sama dengan (contoh: status == 'Y')
+    >= : Lebih besar atau sama dengan (contoh: usia >= 17)
+    <  : Lebih kecil dari
