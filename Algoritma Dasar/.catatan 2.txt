@@ -50,6 +50,9 @@ SELAIN ITU (artinya usia pasti < 17):
 
 Untuk menyusun syarat di dalam tanda kurung (kondisi), Anda akan membutuhkan operator berikut:
     Operator Relasional (Perbandingan):
-    == : Sama dengan (contoh: status == 'Y')
-    >= : Lebih besar atau sama dengan (contoh: usia >= 17)
-    <  : Lebih kecil dari
+        == : Sama dengan (contoh: status == 'Y')
+        >= : Lebih besar atau sama dengan (contoh: usia >= 17)
+        <  : Lebih kecil dari
+    Operator Logika (Penggabung Syarat)
+        && : Operator DAN (Semua syarat harus bernilai benar).
+        || : Operator ATAU (Salah satu syarat benar sudah cukup).
