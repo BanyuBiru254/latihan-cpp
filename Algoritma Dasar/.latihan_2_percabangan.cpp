@@ -71,4 +71,9 @@ int main()
     {
         cout << "Kamu tidak boleh meminjam buku karena ada denda";
     }
+    cout << endl;
+
+    int teori = 80;
+    int praktik = 75;
+
 }
