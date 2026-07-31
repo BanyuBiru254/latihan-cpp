@@ -1,0 +1,15 @@
+
+
+1.
+Studi Kasus: Validasi Pemilih di TPSSebuah panitia pemilu membutuhkan program digital sederhana untuk mengecek kelayakan 
+warga yang datang ke tempat pemungutan suara (TPS). Warga hanya boleh memilih jika berusia di atas atau sama dengan 17 tahun 
+dan sudah terdaftar secara resmi (berstatus 'Y'). Jika warga sudah cukup umur tetapi belum terdaftar, sistem akan memberi tahu 
+bahwa mereka belum terdaftar. Jika warga masih di bawah umur, sistem otomatis menolak. Buatlah kode programnya 
+menggunakan struktur percabangan if-else if-else!
+
+2.
+Sebuah perpustakaan sekolah punya sistem peminjaman buku. Siswa hanya boleh
+meminjam buku jika status keanggotaannya aktif (berstatus 'AKTIF') dan tidak memiliki
+denda (denda = 0). Jika siswa aktif tapi masih punya denda, sistem menampilkan pesan
+agar melunasi denda dulu. Jika status keanggotaan tidak aktif, sistem menolak peminjaman
+secara otomatis. Buatlah kode programnya menggunakan struktur percabangan if-else if-else!
