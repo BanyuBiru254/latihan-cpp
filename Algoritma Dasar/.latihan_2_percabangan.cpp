@@ -3,7 +3,8 @@ using namespace std;
 
 int main()
 {
-    int umur = 17;
+    int umur ;
+    cin >> umur ;
     int b = 4;
 
     // cout << "y = " << y;
@@ -41,7 +42,8 @@ int main()
     //       cout << "b sama dengan 4";
     // }
 
-    char status = 'y';
+    char status ;
+    cin >> status ;
 
     if (umur >= 17 && status == 'y')
     {
