@@ -3,8 +3,7 @@ using namespace std;
 
 int main()
 {
-    int umur ;
-    cin >> umur ;
+    int umur = 17;
     int b = 4;
 
     // cout << "y = " << y;
@@ -42,8 +41,7 @@ int main()
     //       cout << "b sama dengan 4";
     // }
 
-    char status ;
-    cin >> status ;
+    char status = 'y';
 
     if (umur >= 17 && status == 'y')
     {
@@ -56,5 +54,21 @@ int main()
     else
     {
         cout << "Warga di bawah umur, akses ditolak.";
+    }
+    cout << endl;
+    char AKTIF = 'A';
+    int DENDA = 0;
+
+    if (DENDA >= 0 && AKTIF == 'A')
+    {
+        cout << "kamu boleh meminjam buku";
+    }
+    else if (DENDA >= 0 && AKTIF == 'A')
+    {
+        cout << "kamu tidak boleh meminjam karena belum terdaftar";
+    }
+    else
+    {
+        cout << "Kamu tidak boleh meminjam buku karena ada denda";
     }
 }
