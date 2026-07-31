@@ -76,4 +76,21 @@ int main()
     int teori = 80;
     int praktik = 75;
 
+    if (teori >= 80 && praktik >= 75)
+    {
+        cout << "Kamu lulus ujian.";
+    }
+    else if (teori >= 80 && praktik < 75)
+    {
+        cout << "Kamu lulus teori, tetapi tidak lulus praktik.";
+    }
+    else if (teori < 80 && praktik >= 75)
+    {
+        cout << "Kamu lulus praktik, tetapi tidak lulus teori.";
+    }
+
+    else
+    {
+        cout << "Kamu tidak lulus ujian.";
+    }
 }
