@@ -13,3 +13,10 @@ meminjam buku jika status keanggotaannya aktif (berstatus 'AKTIF') dan tidak mem
 denda (denda = 0). Jika siswa aktif tapi masih punya denda, sistem menampilkan pesan
 agar melunasi denda dulu. Jika status keanggotaan tidak aktif, sistem menolak peminjaman
 secara otomatis. Buatlah kode programnya menggunakan struktur percabangan if-else if-else!
+
+3.
+Sebuah kantor Satpas membutuhkan sistem untuk mengecek kelulusan peserta ujian SIM.
+Peserta dinyatakan lulus jika nilai ujian teori ≥ 80 dan nilai ujian praktik ≥ 75. Jika nilai teori
+sudah memenuhi syarat tapi nilai praktik belum, sistem memberi tahu bahwa peserta harus
+mengulang ujian praktik. Jika nilai teori belum memenuhi syarat, sistem otomatis
+menyatakan peserta tidak lulus. Buatlah kode programnya menggunakan struktur percabangan if-else if-else!
