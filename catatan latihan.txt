@@ -19,4 +19,4 @@ Sebuah kantor Satpas membutuhkan sistem untuk mengecek kelulusan peserta ujian S
 Peserta dinyatakan lulus jika nilai ujian teori ≥ 80 dan nilai ujian praktik ≥ 75. Jika nilai teori
 sudah memenuhi syarat tapi nilai praktik belum, sistem memberi tahu bahwa peserta harus
 mengulang ujian praktik. Jika nilai teori belum memenuhi syarat, sistem otomatis
-menyatakan peserta tidak lulus. Buatlah kode programnya menggunakan struktur percabangan if-else if-else!
+menyatakan peserta tidak lulus. Buatlah kode programnya menggunakan struktur percabangan if-else if-else!.. 
