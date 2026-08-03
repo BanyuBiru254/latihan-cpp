@@ -220,3 +220,13 @@ int main() {
  
             if (!running) break;
         }
+#ifndef _WIN32
+        restart:;
+#endif
+        if (!running) break;
+    }
+ 
+    clearScreen();
+    std::cout << "Makasih udah main! Sampai jumpa lagi.\n";
+    return 0;
+}
