@@ -130,3 +130,38 @@ void render(const Player &p, const std::deque<Obstacle> &obstacles, long score, 
     }
 }
  
+int main() {
+    srand((unsigned)time(nullptr));
+ 
+#ifdef _WIN32
+    // Aktifkan dukungan ANSI escape code di console Windows (biar layar bisa di-clear)
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD dwMode = 0;
+    GetConsoleMode(hOut, &dwMode);
+    SetConsoleMode(hOut, dwMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
+#endif
+ 
+#ifndef _WIN32
+    TermiosRaw raw; // aktifkan mode input non-blocking selama program jalan
+#endif
+ 
+    bool running = true;
+ 
+    while (running) {
+        Player player;
+        std::deque<Obstacle> obstacles;
+        long score = 0;
+        double gameSpeed = 0.55;
+        double spawnTimer = 0;
+        bool gameOver = false;
+        bool jumpQueued = false;
+ 
+        while (true) {
+            // ---------- INPUT ----------
+#ifdef _WIN32
+            if (_kbhit()) {
+                int c = _getch();
+                if (c == 'q' || c == 'Q') { running = false; break; }
+                if (c == ' ' || c == 72) jumpQueued = true;   // spasi atau panah atas
+                if (gameOver && (c == 'r' || c == 'R')) break; // restart
+            }
