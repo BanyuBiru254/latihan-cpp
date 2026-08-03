@@ -1,4 +1,3 @@
-
 // =========================================================
 //  GEOMETRY DASH CLONE - Console C++ Edition
 //  Kontrol : SPASI / UP untuk lompat, Q untuk keluar
@@ -54,3 +53,80 @@ bool keyPressed(char &c) {
     if (n > 0) { c = buf; return true; }
     return false;
 }
+#endif
+ 
+void sleepMs(int ms) {
+#ifdef _WIN32
+    Sleep(ms);
+#else
+    usleep(ms * 1000);
+#endif
+}
+ 
+void clearScreen() {
+    // ANSI escape code, jalan di Windows Terminal / CMD baru / Linux / Mac
+    std::cout << "\x1b[H\x1b[2J\x1b[3J";
+}
+ 
+// ---------------- OBSTACLE ----------------
+struct Obstacle {
+    double x;
+    int height; // 1 = duri kecil, 2 = duri tinggi
+};
+ 
+// ---------------- GAME STATE ----------------
+struct Player {
+    double y = GROUND_Y;
+    double velocity = 0;
+    bool onGround = true;
+};
+ 
+bool checkCollision(const Player &p, const std::deque<Obstacle> &obstacles) {
+    for (const auto &ob : obstacles) {
+        int ox = (int)ob.x;
+        if (ox == PLAYER_X) {
+            int playerTop = (int)(p.y) - 1; // tinggi player = 1 kotak (dari y ke y-1)
+            int obstacleTop = GROUND_Y - ob.height;
+            if ((int)p.y >= obstacleTop) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+ 
+void render(const Player &p, const std::deque<Obstacle> &obstacles, long score, bool gameOver) {
+    std::vector<std::string> grid(HEIGHT, std::string(WIDTH, ' '));
+ 
+    // Lantai
+    for (int x = 0; x < WIDTH; x++) grid[GROUND_Y + 1][x] = '=';
+ 
+    // Obstacles (duri)
+    for (const auto &ob : obstacles) {
+        int ox = (int)ob.x;
+        if (ox < 0 || ox >= WIDTH) continue;
+        for (int h = 0; h < ob.height; h++) {
+            int gy = GROUND_Y - h;
+            if (gy >= 0 && gy < HEIGHT) grid[gy][ox] = '^';
+        }
+    }
+ 
+    // Player (kotak)
+    int py = (int)p.y;
+    if (py >= 0 && py < HEIGHT && PLAYER_X < WIDTH) {
+        grid[py][PLAYER_X] = gameOver ? 'X' : '#';
+    }
+ 
+    clearScreen();
+    std::cout << "=========== GEOMETRY DASH (C++ Console) ===========\n";
+    std::cout << "Skor: " << score << "\n";
+    for (auto &row : grid) std::cout << row << "\n";
+    std::cout << "=====================================================\n";
+    if (gameOver) {
+        std::cout << "GAME OVER! Skor akhir: " << score << "\n";
+        std::cout << "Tekan R untuk main lagi, Q untuk keluar.\n";
+    } else {
+        std::cout << "[SPASI/UP] Lompat   [Q] Keluar\n";
+    }
+}
+ 
