@@ -165,3 +165,40 @@ int main() {
                 if (c == ' ' || c == 72) jumpQueued = true;   // spasi atau panah atas
                 if (gameOver && (c == 'r' || c == 'R')) break; // restart
             }
+#else
+            char c;
+            while (keyPressed(c)) {
+                if (c == 'q' || c == 'Q') { running = false; }
+                if (c == ' ') jumpQueued = true;
+                if (gameOver && (c == 'r' || c == 'R')) goto restart;
+            }
+            if (!running) break;
+#endif
+ 
+            if (!gameOver) {
+                // ---------- LOGIKA LOMPAT ----------
+                if (jumpQueued && player.onGround) {
+                    player.velocity = JUMP_FORCE;
+                    player.onGround = false;
+                }
+                jumpQueued = false;
+ 
+                // ---------- FISIKA ----------
+                player.velocity += GRAVITY * 0.35;
+                player.y += player.velocity * 0.5;
+                if (player.y >= GROUND_Y) {
+                    player.y = GROUND_Y;
+                    player.velocity = 0;
+                    player.onGround = true;
+                }
+ 
+                // ---------- SPAWN OBSTACLE ----------
+                spawnTimer -= gameSpeed;
+                if (spawnTimer <= 0) {
+                    Obstacle ob;
+                    ob.x = WIDTH - 1;
+                    ob.height = (rand() % 3 == 0) ? 2 : 1;
+                    obstacles.push_back(ob);
+                    spawnTimer = 14 + rand() % 10;
+                }
+ 
