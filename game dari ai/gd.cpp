@@ -202,3 +202,21 @@ int main() {
                     spawnTimer = 14 + rand() % 10;
                 }
  
+                // ---------- GERAK OBSTACLE ----------
+                for (auto &ob : obstacles) ob.x -= gameSpeed;
+                while (!obstacles.empty() && obstacles.front().x < 0)
+                    obstacles.pop_front();
+ 
+                // ---------- SKOR & KECEPATAN ----------
+                score++;
+                if (score % 300 == 0) gameSpeed += 0.08;
+ 
+                // ---------- COLLISION ----------
+                if (checkCollision(player, obstacles)) gameOver = true;
+            }
+ 
+            render(player, obstacles, score / 10, gameOver);
+            sleepMs(FRAME_DELAY_MS);
+ 
+            if (!running) break;
+        }
