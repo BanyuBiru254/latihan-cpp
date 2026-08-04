@@ -296,3 +296,36 @@ int main() {
                 }
                 if (player.y > HEIGHT + 2) gameOver = true; // jatuh ke lubang terlalu dalam
  
+                // ---------- SPAWN OBSTACLE ----------
+                spawnTimer -= gameSpeed;
+                if (spawnTimer <= 0) {
+                    Obstacle ob;
+                    ob.x = WIDTH - 1;
+                    int roll = rand() % 10;
+                    if (roll < 5) {
+                        ob.type = ObType::SPIKE;
+                        ob.height = (rand() % 3 == 0) ? 2 : 1;
+                    } else if (roll < 8) {
+                        ob.type = ObType::PIT;
+                        ob.height = 2 + rand() % 2; // lebar lubang
+                    } else {
+                        ob.type = ObType::BLOCK;
+                        ob.height = 3; // harus dilompati di ketinggian pas
+                    }
+                    obstacles.push_back(ob);
+                    spawnTimer = 16 + rand() % 10;
+                }
+ 
+                // ---------- GERAK OBSTACLE ----------
+                for (auto &ob : obstacles) ob.x -= gameSpeed;
+                while (!obstacles.empty() &&
+                       obstacles.front().x + std::max(obstacles.front().height, 1) < 0)
+                    obstacles.pop_front();
+ 
+                // ---------- SKOR & KECEPATAN ----------
+                score++;
+                if (score % 400 == 0) gameSpeed = std::min(gameSpeed + 0.07, 1.6);
+ 
+                // ---------- COLLISION ----------
+                if (checkCollision(player, obstacles)) gameOver = true;
+ 
