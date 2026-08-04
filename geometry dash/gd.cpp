@@ -1,14 +1,17 @@
 // =========================================================
-//  GEOMETRY DASH CLONE - Console C++ Edition
-//  Kontrol : SPASI / UP untuk lompat, Q untuk keluar
+//  GEOMETRY DASH CLONE - Console C++ Edition (IMPROVED)
+//  Kontrol : SPASI / UP untuk lompat, P untuk pause, Q untuk keluar
 // =========================================================
  
 #include <iostream>
+#include <sstream>
+#include <fstream>
 #include <vector>
 #include <string>
 #include <cstdlib>
 #include <ctime>
 #include <deque>
+#include <algorithm>
  
 #ifdef _WIN32
     #include <conio.h>
@@ -17,17 +20,29 @@
     #include <termios.h>
     #include <unistd.h>
     #include <fcntl.h>
-    #include <sys/select.h>
 #endif
  
 // ---------------- KONFIGURASI ----------------
-const int WIDTH        = 60;   // lebar area permainan
-const int HEIGHT        = 16;   // tinggi area permainan
-const int GROUND_Y       = HEIGHT - 2;
-const int PLAYER_X       = 8;
-const double GRAVITY     = 0.9;
-const double JUMP_FORCE  = -3.6;
-const int FRAME_DELAY_MS = 45;  // kecepatan game (ms per frame)
+const int WIDTH          = 60;   // lebar area permainan
+const int HEIGHT         = 16;   // tinggi area permainan
+const int GROUND_Y        = HEIGHT - 2;
+const int PLAYER_X        = 8;
+const double GRAVITY      = 0.9;
+const double JUMP_FORCE   = -3.9;
+const int FRAME_DELAY_MS  = 40;  // kecepatan game (ms per frame)
+const char* HS_FILE       = "highscore.txt";
+ 
+// ---------------- WARNA ANSI ----------------
+namespace col {
+    const char* RESET  = "\x1b[0m";
+    const char* PLAYER = "\x1b[92m";  // hijau terang
+    const char* SPIKE  = "\x1b[91m";  // merah terang
+    const char* GROUND = "\x1b[33m";  // kuning/coklat
+    const char* BG     = "\x1b[36m";  // cyan (dekorasi)
+    const char* TITLE  = "\x1b[95m";  // magenta
+    const char* SCORE  = "\x1b[93m";  // kuning terang
+    const char* DEAD   = "\x1b[91m";
+}
  
 // ---------------- INPUT NON-BLOCKING ----------------
 #ifndef _WIN32
@@ -63,15 +78,27 @@ void sleepMs(int ms) {
 #endif
 }
  
-void clearScreen() {
-    // ANSI escape code, jalan di Windows Terminal / CMD baru / Linux / Mac
-    std::cout << "\x1b[H\x1b[2J\x1b[3J";
+// ---------------- HIGH SCORE ----------------
+long loadHighScore() {
+    std::ifstream f(HS_FILE);
+    long hs = 0;
+    if (f.is_open()) f >> hs;
+    return hs;
+}
+ 
+void saveHighScore(long hs) {
+    std::ofstream f(HS_FILE);
+    if (f.is_open()) f << hs;
 }
  
 // ---------------- OBSTACLE ----------------
+enum class ObType { SPIKE, PIT, BLOCK };
+ 
 struct Obstacle {
     double x;
-    int height; // 1 = duri kecil, 2 = duri tinggi
+    int height;   // untuk SPIKE/BLOCK: tinggi dari tanah. untuk PIT: lebar lubang
+    ObType type;
+    bool passed = false; // sudah dilewati player (buat cek skor kombo, opsional)
 };
  
 // ---------------- GAME STATE ----------------
@@ -81,60 +108,125 @@ struct Player {
     bool onGround = true;
 };
  
-bool checkCollision(const Player &p, const std::deque<Obstacle> &obstacles) {
+// Cek apakah posisi x ada di dalam lubang (pit) -> kalau ya dan player di tanah, mati
+bool isPit(double x, const std::deque<Obstacle> &obstacles) {
     for (const auto &ob : obstacles) {
-        int ox = (int)ob.x;
-        if (ox == PLAYER_X) {
-            int playerTop = (int)(p.y) - 1; // tinggi player = 1 kotak (dari y ke y-1)
-            int obstacleTop = GROUND_Y - ob.height;
-            if ((int)p.y >= obstacleTop) {
-                return true;
-            }
+        if (ob.type != ObType::PIT) continue;
+        if (x >= ob.x && x < ob.x + ob.height) return true;
+    }
+    return false;
+}
+ 
+bool checkCollision(const Player &p, const std::deque<Obstacle> &obstacles) {
+    int px = PLAYER_X;
+    int py = (int)(p.y + 0.5); // posisi bulat player
+ 
+    // Jatuh ke lubang saat di tanah
+    if (p.onGround && isPit((double)px, obstacles)) return true;
+ 
+    for (const auto &ob : obstacles) {
+        if (ob.type == ObType::PIT) continue;
+        int ox = (int)(ob.x + 0.5);
+        if (ox != px) continue;
+ 
+        if (ob.type == ObType::SPIKE) {
+            int spikeTop = GROUND_Y - ob.height + 1;
+            if (py >= spikeTop) return true;
+        } else if (ob.type == ObType::BLOCK) {
+            // block melayang di udara, harus dilompati pas ketinggian pas
+            int blockY = GROUND_Y - ob.height;
+            if (py == blockY) return true;
         }
     }
     return false;
 }
  
-void render(const Player &p, const std::deque<Obstacle> &obstacles, long score, bool gameOver) {
+// ---------------- RENDER (pakai buffer, anti-flicker) ----------------
+void render(const Player &p, const std::deque<Obstacle> &obstacles,
+            long score, long highScore, bool gameOver, bool paused, int frameTick) {
     std::vector<std::string> grid(HEIGHT, std::string(WIDTH, ' '));
+    std::vector<std::string> color(HEIGHT, std::string(WIDTH, ' '));
  
-    // Lantai
-    for (int x = 0; x < WIDTH; x++) grid[GROUND_Y + 1][x] = '=';
+    auto setCell = [&](int y, int x, char ch, const char* c) {
+        if (y >= 0 && y < HEIGHT && x >= 0 && x < WIDTH) {
+            grid[y][x] = ch;
+            color[y][x] = c[0]; // marker sederhana, dipetakan lagi saat print
+        }
+    };
  
-    // Obstacles (duri)
-    for (const auto &ob : obstacles) {
-        int ox = (int)ob.x;
-        if (ox < 0 || ox >= WIDTH) continue;
-        for (int h = 0; h < ob.height; h++) {
-            int gy = GROUND_Y - h;
-            if (gy >= 0 && gy < HEIGHT) grid[gy][ox] = '^';
+    // Dekorasi background (bintang bergerak pelan)
+    for (int x = 0; x < WIDTH; x += 7) {
+        int bx = (x + frameTick / 3) % WIDTH;
+        if (grid[2][bx] == ' ') setCell(2, bx, '.', col::BG);
+    }
+ 
+    // Lantai + lubang
+    for (int x = 0; x < WIDTH; x++) {
+        if (!isPit((double)x, obstacles)) {
+            setCell(GROUND_Y + 1, x, '=', col::GROUND);
         }
     }
  
-    // Player (kotak)
-    int py = (int)p.y;
-    if (py >= 0 && py < HEIGHT && PLAYER_X < WIDTH) {
-        grid[py][PLAYER_X] = gameOver ? 'X' : '#';
+    // Obstacles
+    for (const auto &ob : obstacles) {
+        if (ob.type == ObType::SPIKE) {
+            int ox = (int)(ob.x + 0.5);
+            for (int h = 0; h < ob.height; h++) {
+                setCell(GROUND_Y - h, ox, (h == ob.height - 1) ? '^' : '#', col::SPIKE);
+            }
+        } else if (ob.type == ObType::BLOCK) {
+            int ox = (int)(ob.x + 0.5);
+            setCell(GROUND_Y - ob.height, ox, '#', col::SPIKE);
+        }
+        // PIT tidak digambar sebagai objek, cuma menghilangkan lantai
     }
  
-    clearScreen();
-    std::cout << "=========== GEOMETRY DASH (C++ Console) ===========\n";
-    std::cout << "Skor: " << score << "\n";
-    for (auto &row : grid) std::cout << row << "\n";
-    std::cout << "=====================================================\n";
-    if (gameOver) {
-        std::cout << "GAME OVER! Skor akhir: " << score << "\n";
-        std::cout << "Tekan R untuk main lagi, Q untuk keluar.\n";
-    } else {
-        std::cout << "[SPASI/UP] Lompat   [Q] Keluar\n";
+    // Player
+    int py = (int)(p.y + 0.5);
+    setCell(py, PLAYER_X, gameOver ? 'X' : '@', col::PLAYER);
+ 
+    // ---------- Build output string sekali jalan ----------
+    std::ostringstream out;
+    out << "\x1b[H"; // pindah kursor ke atas (gak clear penuh -> kurangi flicker)
+    out << col::TITLE << "=========== GEOMETRY DASH (C++ Console) ===========" << col::RESET << "\n";
+    out << col::SCORE << "Skor: " << score << "   Terbaik: " << highScore << col::RESET << "        \n";
+ 
+    for (int y = 0; y < HEIGHT; y++) {
+        for (int x = 0; x < WIDTH; x++) {
+            char ch = grid[y][x];
+            char c = color[y][x];
+            if (ch == ' ') { out << ' '; continue; }
+            switch (c) {
+                case 'P': out << col::PLAYER << ch << col::RESET; break; // unused marker fallback
+                default:
+                    if (c == col::PLAYER[0]) out << col::PLAYER << ch << col::RESET;
+                    else if (c == col::SPIKE[0]) out << col::SPIKE << ch << col::RESET;
+                    else if (c == col::GROUND[0]) out << col::GROUND << ch << col::RESET;
+                    else if (c == col::BG[0]) out << col::BG << ch << col::RESET;
+                    else out << ch;
+            }
+        }
+        out << "\n";
     }
+ 
+    out << col::TITLE << "=====================================================" << col::RESET << "\n";
+    if (gameOver) {
+        out << col::DEAD << "GAME OVER! Skor akhir: " << score << col::RESET << "                    \n";
+        out << "Tekan R untuk main lagi, Q untuk keluar.                        \n";
+    } else if (paused) {
+        out << "-- PAUSE -- Tekan P untuk lanjut.                                \n";
+        out << "[SPASI/UP] Lompat   [P] Pause   [Q] Keluar                       \n";
+    } else {
+        out << "[SPASI/UP] Lompat   [P] Pause   [Q] Keluar                       \n";
+    }
+ 
+    std::cout << out.str() << std::flush;
 }
  
 int main() {
     srand((unsigned)time(nullptr));
  
 #ifdef _WIN32
-    // Aktifkan dukungan ANSI escape code di console Windows (biar layar bisa di-clear)
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     DWORD dwMode = 0;
     GetConsoleMode(hOut, &dwMode);
@@ -142,9 +234,11 @@ int main() {
 #endif
  
 #ifndef _WIN32
-    TermiosRaw raw; // aktifkan mode input non-blocking selama program jalan
+    TermiosRaw raw;
 #endif
  
+    std::cout << "\x1b[2J"; // clear penuh sekali di awal
+    long highScore = loadHighScore();
     bool running = true;
  
     while (running) {
@@ -152,9 +246,12 @@ int main() {
         std::deque<Obstacle> obstacles;
         long score = 0;
         double gameSpeed = 0.55;
-        double spawnTimer = 0;
+        double spawnTimer = 20;
         bool gameOver = false;
+        bool paused = false;
         bool jumpQueued = false;
+        int frameTick = 0;
+        bool scoreSaved = false;
  
         while (true) {
             // ---------- INPUT ----------
@@ -162,71 +259,18 @@ int main() {
             if (_kbhit()) {
                 int c = _getch();
                 if (c == 'q' || c == 'Q') { running = false; break; }
-                if (c == ' ' || c == 72) jumpQueued = true;   // spasi atau panah atas
-                if (gameOver && (c == 'r' || c == 'R')) break; // restart
+                if (c == ' ' || c == 72) jumpQueued = true;
+                if (c == 'p' || c == 'P') paused = !paused;
+                if (gameOver && (c == 'r' || c == 'R')) break;
             }
 #else
             char c;
             while (keyPressed(c)) {
                 if (c == 'q' || c == 'Q') { running = false; }
                 if (c == ' ') jumpQueued = true;
+                if (c == 'p' || c == 'P') paused = !paused;
                 if (gameOver && (c == 'r' || c == 'R')) goto restart;
             }
             if (!running) break;
 #endif
  
-            if (!gameOver) {
-                // ---------- LOGIKA LOMPAT ----------
-                if (jumpQueued && player.onGround) {
-                    player.velocity = JUMP_FORCE;
-                    player.onGround = false;
-                }
-                jumpQueued = false;
- 
-                // ---------- FISIKA ----------
-                player.velocity += GRAVITY * 0.35;
-                player.y += player.velocity * 0.5;
-                if (player.y >= GROUND_Y) {
-                    player.y = GROUND_Y;
-                    player.velocity = 0;
-                    player.onGround = true;
-                }
- 
-                // ---------- SPAWN OBSTACLE ----------
-                spawnTimer -= gameSpeed;
-                if (spawnTimer <= 0) {
-                    Obstacle ob;
-                    ob.x = WIDTH - 1;
-                    ob.height = (rand() % 3 == 0) ? 2 : 1;
-                    obstacles.push_back(ob);
-                    spawnTimer = 14 + rand() % 10;
-                }
- 
-                // ---------- GERAK OBSTACLE ----------
-                for (auto &ob : obstacles) ob.x -= gameSpeed;
-                while (!obstacles.empty() && obstacles.front().x < 0)
-                    obstacles.pop_front();
- 
-                // ---------- SKOR & KECEPATAN ----------
-                score++;
-                if (score % 300 == 0) gameSpeed += 0.08;
- 
-                // ---------- COLLISION ----------
-                if (checkCollision(player, obstacles)) gameOver = true;
-            }
- 
-            render(player, obstacles, score / 10, gameOver);
-            sleepMs(FRAME_DELAY_MS);
- 
-            if (!running) break;
-        }
-#ifndef _WIN32
-        restart:;
-#endif
-        if (!running) break;
-    }
- 
-    clearScreen();
-    std::cout << "Makasih udah main! Sampai jumpa lagi.\n";
-    return 0;
-}
