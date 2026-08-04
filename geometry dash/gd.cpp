@@ -274,3 +274,25 @@ int main() {
             if (!running) break;
 #endif
  
+            if (!gameOver && !paused) {
+                frameTick++;
+ 
+                // ---------- LOMPAT ----------
+                if (jumpQueued && player.onGround) {
+                    player.velocity = JUMP_FORCE;
+                    player.onGround = false;
+                }
+                jumpQueued = false;
+ 
+                // ---------- FISIKA ----------
+                player.velocity += GRAVITY * 0.35;
+                player.y += player.velocity * 0.5;
+                if (player.y >= GROUND_Y && !isPit((double)PLAYER_X, obstacles)) {
+                    player.y = GROUND_Y;
+                    player.velocity = 0;
+                    player.onGround = true;
+                } else if (player.y < GROUND_Y) {
+                    player.onGround = false;
+                }
+                if (player.y > HEIGHT + 2) gameOver = true; // jatuh ke lubang terlalu dalam
+ 
