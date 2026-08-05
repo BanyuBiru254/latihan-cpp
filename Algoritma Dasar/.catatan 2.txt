@@ -63,3 +63,5 @@ Aturan Penulisan (Sintaks) C++
     kurung kurawal opsional, tetapi sangat disarankan untuk selalu ditulis agar menghindari bug.
     Titik Koma ;: Jangan pernah menaruh titik koma tepat setelah tanda kurung kondisi, contoh yang salah:
     if(usia >= 17);. Titik koma hanya ditulis di akhir baris pernyataan di dalam kurung kurawal.
+
+Buatlah program C++ untuk memeriksa apakah sebuah angka bulat yang dimasukkan oleh pengguna merupakan bilangan genap atau ganjil.
