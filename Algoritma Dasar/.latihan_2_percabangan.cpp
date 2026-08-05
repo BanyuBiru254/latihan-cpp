@@ -93,4 +93,15 @@ int main()
     {
         cout << "Kamu tidak lulus ujian.";
     }
+
+int angkah;
+    cout << "Masukkan angkah: ";
+    cin >> angkah;
+    
+    if (angka % 2 == 0) {
+        cout << angkah << " adalah bilangan genap." << endl;
+    } else {
+        cout << angkah << " adalah bilangan ganjil." << endl;
+    }
+    return 0;
 }
