@@ -65,3 +65,5 @@ Aturan Penulisan (Sintaks) C++
     if(usia >= 17);. Titik koma hanya ditulis di akhir baris pernyataan di dalam kurung kurawal.
 
 Buatlah program C++ untuk memeriksa apakah sebuah angka bulat yang dimasukkan oleh pengguna merupakan bilangan genap atau ganjil.
+
+Buatlah program C++ yang menerima input nilai ujian (0-100). Jika nilai lebih besar atau sama dengan 75, cetak "Lulus", jika tidak cetak "Tidak Lulus".
