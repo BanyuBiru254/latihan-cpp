@@ -102,6 +102,16 @@ int angkah;
         cout << angkah << " adalah bilangan genap." << endl;
     } else {
         cout << angkah << " adalah bilangan ganjil." << endl;
-    }
-    return 0;
+
+int main() {
+    int nilai;
+    cout << "Masukkan nilai ujian: ";
+    cin >> nilai;
+    
+    if (nilai >= 75) {
+        cout << "Status: Lulus" << endl;
+    } else {
+        cout << "Status: Tidak Lulus" << endl;
+
+
 }
