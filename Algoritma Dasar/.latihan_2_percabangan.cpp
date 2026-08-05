@@ -104,14 +104,28 @@ int angkah;
         cout << angkah << " adalah bilangan ganjil." << endl;
 
 int main() {
-    int nilai;
-    cout << "Masukkan nilai ujian: ";
+    int nilaiih;
+    cout << "Masukkan nilaiih ujian: ";
     cin >> nilai;
     
-    if (nilai >= 75) {
+    if (nilaiih >= 75) {
         cout << "Status: Lulus" << endl;
     } else {
         cout << "Status: Tidak Lulus" << endl;
 
-
+int main() {
+    int nilaii;
+    cout << "Masukkan nilaii angka: ";
+    cin >> nilai;
+    
+    if (nilaii >= 85) {
+        cout << "Nilai Huruf: A" << endl;
+    } else if (nilaii >= 70) {
+        cout << "Nilaii Huruf: B" << endl;
+    } else if (nilaii >= 55) {
+        cout << "Nilaii Huruf: C" << endl;
+    } else if (nilaii >= 40) {
+        cout << "Nilaii Huruf: D" << endl;
+    } else {
+        cout << "Nilaii Huruf: E" << endl;
 }
