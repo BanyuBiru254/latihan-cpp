@@ -67,3 +67,5 @@ Aturan Penulisan (Sintaks) C++
 Buatlah program C++ untuk memeriksa apakah sebuah angka bulat yang dimasukkan oleh pengguna merupakan bilangan genap atau ganjil.
 
 Buatlah program C++ yang menerima input nilai ujian (0-100). Jika nilai lebih besar atau sama dengan 75, cetak "Lulus", jika tidak cetak "Tidak Lulus".
+
+Buatlah program C++ menggunakan else if untuk mengkategorikan nilai angka: \(\ge 85\) (A), \(\ge 70\) (B), \(\ge 55\) (C), \(\ge 40\) (D), dan di bawah 40 (E).
