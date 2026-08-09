@@ -1,5 +1,5 @@
 If: Satu pilihan jika kondisi benar.
-If/Else: Dua pilihan untuk kondisi benar atau salah.
+If/Else: Dua pilihan untuk kondisi benar atau salah. 
 Pernyataan else digunakan bersama if untuk menentukan blok kode yang akan dieksekusi jika kondisi pada if bernilai salah (false).
 
 yg ku ngerti:
