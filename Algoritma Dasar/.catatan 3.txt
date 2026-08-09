@@ -1,0 +1,7 @@
+7 Percobaan Fungsi 
+7.1 Tujuan Percobaan
+Mahasiswa mampu menerapkan penggunaan fungsi
+7.2 Percobaan 
+7.2.1 Percobaan 1 
+Berikut ini adalah dua program yang dapat mengubah nilai suhu pada satuan Fahrenheit ke satuan Celcius. 
+Program A: tanpa menggunakan fungsi
