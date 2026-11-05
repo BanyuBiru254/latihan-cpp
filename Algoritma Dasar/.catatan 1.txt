@@ -13,3 +13,4 @@ cout << "Umur Anda adalah: " << umur << " tahun." << endl;
 Penting!!
 kalo int ga make tanda petik ("")
 bisa matematika di cout
+matematika apa aja atau fisika bisa juga

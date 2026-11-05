@@ -20,3 +20,4 @@ Peserta dinyatakan lulus jika nilai ujian teori â‰¥ 80 dan nilai ujian praktik â
 sudah memenuhi syarat tapi nilai praktik belum, sistem memberi tahu bahwa peserta harus
 mengulang ujian praktik. Jika nilai teori belum memenuhi syarat, sistem otomatis
 menyatakan peserta tidak lulus. Buatlah kode programnya menggunakan struktur percabangan if-else if-else!.. 
+if else itu bisa di
